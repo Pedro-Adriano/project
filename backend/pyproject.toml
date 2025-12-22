@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["Pedro-Adriano <pedrothiagoadriano@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+ruff = "^0.14.10"
+isort = "^7.0.0"
+sqlalchemy = "^2.0.45"
+psycopg2-binary = "^2.9.11"
+fastapi = "^0.127.0"
+uvicorn = "^0.40.0"
+fastapi-pagination = "^0.15.4"
+authlib = "^1.6.6"
+python-decouple = "^3.8"
+python-multipart = "^0.0.21"
+httpx = "^0.28.1"
+
+
+[tool.poetry.group.dev.dependencies]
+coverage = "^7.13.0"
+pytest = "^9.0.2"
+pytest-cov = "^7.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["app/tests"]
+
+[tool.isort]
+profile = "black"
+known_first_party = ["app"]
+known_third_party = ["fastapi", "sqlalchemy", "authlib", "decouple", "uvicorn", "fastapi_pagination"]
+line_length = 120
+skip_gitignore = true

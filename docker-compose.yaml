@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:15
+    container_name: project_db
+    environment:
+      POSTGRES_DB: project
+      POSTGRES_USER: project
+      POSTGRES_PASSWORD: project
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./init-db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+
+  project_backend:
+    container_name: project_backend
+    build:
+      target: development
+      context: ./backend
+      dockerfile: ./Dockerfile
+    ports:
+      - "8900:8899"
+    volumes:
+      - ./backend:/backend
+    depends_on:
+      - db
+    command: ["poetry", "run", "uvicorn", "app.main:application", "--host", "0.0.0.0", "--port", "8899", "--reload"]
+
+volumes:
+  postgres_data:
