@@ -146,11 +146,12 @@ O projeto utiliza Poetry:
 
 ---
 
-## 🧪 Testes
+## Testes
 
-- Apenas testes de integração
-- Banco de dados em memória recriado a cada execução
-- Dados previsíveis e consistentes
+Para rodar os testes do projeto, utilize o seguinte comando dentro do container:
+
+```bash
+docker compose exec project_backend poetry run env PYTHONPATH=/backend pytest
 
 ---
 
