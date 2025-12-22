@@ -135,6 +135,8 @@ Campos:
 
 📌 Um filme pode possuir múltiplos produtores, e um produtor pode estar associado a múltiplos filmes.
 
+---
+
 ## 📦 Gerenciamento de Dependências
 
 O projeto utiliza Poetry:
