@@ -4,7 +4,7 @@ from io import StringIO
 from itertools import groupby
 from typing import Dict, List
 
-from fastapi import UploadFile
+from fastapi import HTTPException, UploadFile
 
 from app.schemas.movielist_schema import MovieImportSchema, ProducerSchema
 
@@ -18,6 +18,12 @@ class AwardsService:
         content = await file.read()
         csv_file = StringIO(content.decode("utf-8"))
         reader = csv.DictReader(csv_file, delimiter=";")
+
+        if self.validate_required_fields(reader.fieldnames):
+            raise HTTPException(
+                status_code=400,
+                detail="Arquivo CSV inválido. Campos obrigatórios estão faltando.",
+            )
 
         movies: List[MovieImportSchema] = []
 
@@ -40,6 +46,11 @@ class AwardsService:
         self.repository.insert_movies(movies)
 
         return {"movies_imported": len(movies)}
+
+    def validate_required_fields(self, fieldnames: List[str]) -> bool:
+        required_fields = ["year", "title", "studios", "producers", "winner"]
+
+        return bool([field for field in required_fields if field not in fieldnames])
 
     def get_intervals(self):
 
