@@ -17,9 +17,9 @@ def create_app() -> FastAPI:
     )
 
     @fast_api.on_event("startup")
-    def startup():
+    async def startup():
         init_db()
-        import_csv_on_startup()
+        await import_csv_on_startup()
 
     fast_api.include_router(
         api_router,

@@ -14,12 +14,9 @@ class AwardsRepository:
 
     def insert_movies(self, movies_dto: List[MovieImportSchema]) -> None:
 
-        producers_cache: Dict[str, Producer] = {}
-
-        existing_producers = self.session.query(Producer).all()
-
-        for producer in existing_producers:
-            producers_cache[producer.name] = producer
+        producers_cache: Dict[str, Producer] = {
+            producer.name: producer for producer in self.session.query(Producer).all()
+        }
 
         for movie_dto in movies_dto:
             movie = Movie(
@@ -31,12 +28,10 @@ class AwardsRepository:
 
             for producer_dto in movie_dto.producers:
                 name = producer_dto.name.strip()
-
                 if not name:
                     continue
 
                 producer = producers_cache.get(name)
-
                 if not producer:
                     producer = Producer(name=name)
                     self.session.add(producer)
